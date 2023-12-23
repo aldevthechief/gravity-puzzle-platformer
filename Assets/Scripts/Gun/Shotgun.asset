@@ -1,0 +1,25 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8ed8175d743a8a540b5e4b1e9c5cda85, type: 3}
+  m_Name: Shotgun
+  m_EditorClassIdentifier: 
+  weaponname: Shotgun
+  damage: 10
+  distance: 100
+  firerate: 120
+  recoilforce: 30
+  bullettraveltime: 250
+  explosionforce: 20
+  camrecoildirection: {x: 10, y: 10, z: 10}
+  muzzle: {fileID: 3582112010257630935, guid: af116bf3304386c43878a6d8fa4a54b8, type: 3}
+  explosion: {fileID: 7928416967732626108, guid: df00c060bbbb4334a9cc466abfc55037, type: 3}
+  trail: {fileID: 1871024337039242659, guid: c8414fb8d2f619a4ab13a43d028ce145, type: 3}
