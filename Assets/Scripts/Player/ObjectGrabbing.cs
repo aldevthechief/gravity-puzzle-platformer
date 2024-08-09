@@ -7,15 +7,21 @@ public class ObjectGrabbing : MonoBehaviour
 {
     public Transform holdpos;
     public LayerMask grablayer;
-    private GameObject heldobj;
+    [HideInInspector] public GameObject heldobj;
     private Rigidbody heldobjrb;
     private Vector3 distforce;
 
     public Collider playercoll;
+    private GravityController gravityController;
 
     public float pickuprange = 5f;
     public float pickupforce = 150f;
     public float torquemult;
+
+    void Start()
+    {
+        gravityController = playercoll.GetComponent<GravityController>();
+    }
 
     void Update()
     {
@@ -42,7 +48,9 @@ public class ObjectGrabbing : MonoBehaviour
         {
             heldobjrb.AddForce(distforce);
             Vector3 crossvector = Vector3.Cross(transform.forward, heldobjrb.transform.forward);
-            heldobjrb.AddTorque(new Vector3(crossvector.x, crossvector.y, Vector3.Cross(-transform.up, heldobjrb.transform.up).z) * pickupforce * torquemult * heldobjrb.mass);
+            Vector3 planeforward = Vector3.Cross(gravityController.groundup, gravityController.groundright);
+            Vector3 resultcross = Vector3.ProjectOnPlane(crossvector, planeforward);
+            heldobjrb.AddTorque((resultcross + Vector3.Project(Vector3.Cross(-transform.up, heldobjrb.transform.up), planeforward)) * pickupforce * torquemult * heldobjrb.mass);
         }
     }
 
@@ -73,7 +81,7 @@ public class ObjectGrabbing : MonoBehaviour
     void ThrowObject()
     {
         heldobjrb.GetComponent<OutlineBehaviour>().enabled = true;
-        int grablayerint = (int) (Mathf.Log10(heldobjrb.gameObject.layer) / Mathf.Log10(2));
+        // int grablayerint = (int) (Mathf.Log10(heldobjrb.gameObject.layer) / Mathf.Log10(2));
         Physics.IgnoreCollision(playercoll, heldobjrb.GetComponentInChildren<Collider>(), false);
         // heldobjrb.interpolation = RigidbodyInterpolation.Interpolate;
         heldobjrb.useGravity = true;

@@ -7,6 +7,7 @@ TagManager:
   - Ground
   - GravitySphere
   - Shroom
+  - Slope
   layers:
   - Default
   - TransparentFX
@@ -24,8 +25,8 @@ TagManager:
   - ClockLayer
   - PCLayer
   - PCUI
-  - 
-  - 
+  - GravityWall
+  - Slope
   - 
   - 
   - 

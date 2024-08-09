@@ -7,34 +7,42 @@ public class OutlineHandler : MonoBehaviour
 {
     public LayerMask invlayers;
     public Color grabcolor;
+
     private Transform crosshair;
-    private OutlineBehaviour line;
-    private bool ishit;
+    private ObjectGrabbing grabscript;
+
+    private OutlineBehaviour prevline;
+    private bool grabbingsumn = false;
 
     void Start()
     {
         crosshair = GameObject.Find("CrosshairSystem").transform;
+        grabscript = GetComponent<ObjectGrabbing>();
     }
 
     void Update()
     {
-        crosshair.GetChild(0).gameObject.SetActive(!ishit);
-        crosshair.GetChild(1).gameObject.SetActive(ishit);
-        
-        if(Physics.Raycast(transform.position, transform.forward, out RaycastHit hit, 5f, ~invlayers))
+        crosshair.GetChild(0).gameObject.SetActive(!grabbingsumn);
+        crosshair.GetChild(1).gameObject.SetActive(grabbingsumn);
+
+        if(Physics.Raycast(transform.position, transform.forward, out RaycastHit hit, 5f, ~invlayers) && !grabscript.heldobj)
         {
-            line = hit.transform.gameObject.GetComponent<OutlineBehaviour>();
-            if(line != null)
+            OutlineBehaviour currline = hit.transform.gameObject.GetComponent<OutlineBehaviour>();
+            if(currline != null)
             {
-                line.OutlineColor = grabcolor;
-                ishit = true;
+                grabbingsumn = true;
+                if(prevline != null)
+                    prevline.OutlineColor = Color.white;
+                prevline = currline;
+                prevline.OutlineColor = grabcolor;
             }
+            else grabbingsumn = false;
         }
-        else if(ishit)
+        else 
         {
-            ishit = false;
-            if(line != null)
-                line.OutlineColor = Color.white;
+            grabbingsumn = false;
+            if(prevline != null)
+                prevline.OutlineColor = Color.white;
         }
     }
 }

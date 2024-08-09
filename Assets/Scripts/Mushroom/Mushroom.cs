@@ -5,7 +5,7 @@ using DG.Tweening;
 
 public class Mushroom : MonoBehaviour
 {
-    public float maxforce = 55f;
+    public float minforce = 15f, maxforce = 55f;
     public float relvelmult = 1f;
     public Vector3 squeezeforce;
     public float squeezetime;
@@ -21,6 +21,7 @@ public class Mushroom : MonoBehaviour
         {
             hasColl = true;
             Rigidbody rb = other.gameObject.GetComponent<Rigidbody>();
+            GravityController gravctrl = GameObject.FindGameObjectWithTag("Player").GetComponent<GravityController>();
             if(rb != null && other.gameObject.CompareTag("Player"))
             {
                 foreach(Transform i in squeezetransf)
@@ -29,9 +30,32 @@ public class Mushroom : MonoBehaviour
                     i.DOPunchPosition(Vector3.down * squeezeforce.y, squeezetime);
                     i.DOPunchScale(squeezeforce, squeezetime);
                 }
-                rb.AddForce(Vector3.ClampMagnitude(Vector3.up.normalized * other.relativeVelocity.magnitude * relvelmult, maxforce), ForceMode.Impulse);
+
+                PlayerMovement player = rb.GetComponent<PlayerMovement>();
+                if(gravctrl != null)
+                {
+                    StartCoroutine(player.BlockForces(0.25f));
+                    Vector3 dir = gravctrl.groundup;
+                    rb.AddForce(dir * Mathf.Clamp(other.relativeVelocity.magnitude, minforce, maxforce) * relvelmult, ForceMode.Impulse);
+                }  
+
                 Instantiate(bounceparticles, other.transform.position, Quaternion.identity);
             }
+            // code to make any other rigidbody go up
+            // else if(rb != null)
+            // {
+            //     foreach(Transform i in squeezetransf)
+            //     {
+            //         i.DOKill(true);
+            //         i.DOPunchPosition(Vector3.down * squeezeforce.y, squeezetime);
+            //         i.DOPunchScale(squeezeforce, squeezetime);
+            //     }
+
+            //     Vector3 dir = gravctrl.groundup;
+            //     rb.AddForce(dir * Mathf.Clamp(other.relativeVelocity.magnitude, minforce, maxforce) * relvelmult, ForceMode.Impulse);
+
+            //     Instantiate(bounceparticles, other.transform.position, Quaternion.identity);
+            // }
             Invoke("UnColl", timebtwcoll);
         }
     }
