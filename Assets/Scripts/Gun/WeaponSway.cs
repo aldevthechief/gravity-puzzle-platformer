@@ -8,6 +8,7 @@ public class WeaponSway : MonoBehaviour
     public float maxamount;
     public float smoothamount;
     private Vector3 initialPos;
+    
     void Start()
     {
         initialPos = transform.localPosition;
