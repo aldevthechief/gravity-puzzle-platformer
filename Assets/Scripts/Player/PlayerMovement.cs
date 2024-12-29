@@ -14,7 +14,6 @@ public class PlayerMovement : MonoBehaviour
     public float groundvelmult;
     private float velocitymult;
     public float airmult;
-    private Vector3 velocityChange;
     private Vector3 gravitymove;
     public Transform gc;
     public float groundDistance = 0.4f;
