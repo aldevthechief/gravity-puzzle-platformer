@@ -42,7 +42,6 @@ public class PlayerMovement : MonoBehaviour
     public float slopelimit;
 
     public float slopeslidespeed;
-    public float antibumpforce;
 
     private RaycastHit slopehit;
     private Vector3 slopedir;
